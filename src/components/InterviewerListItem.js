@@ -8,10 +8,10 @@ export default function InterviewerListItem (props) {
     "interviewers__item--selected" : props.selected
   })
 
-  console.log("THIS", props)
+  //console.log("THIS", props)
   return (
     <li 
-      onClick={() => props.setInterviewer(props.id)}
+      onClick={props.setInterviewer}
       className={listClass}
       >
     <img
@@ -19,7 +19,7 @@ export default function InterviewerListItem (props) {
       src={props.avatar}
       alt={props.name}
     />
-    {props.selected && <p>{props.name}</p>}
+    {props.selected && props.name}
     </li>
   );
 }
