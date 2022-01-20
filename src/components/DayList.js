@@ -11,7 +11,7 @@ export default function DayList(props) {
     selected={day.name === props.value}
     setDay={props.onChange}  
     />);
-  console.log("PARSEDDAYS", parsedDays)
+  //console.log("PARSEDDAYS", parsedDays)
   return (
     <ul>
       {parsedDays}
