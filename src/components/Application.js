@@ -4,6 +4,7 @@ import axios from "axios";
 import "components/Application.scss";
 import DayList from "components/DayList.js"
 import Appointment from "components/Appointment/index.js";
+import getAppointmentsForDay from "../helpers/selectors.js"
 
 
 export default function Application(props) {
@@ -16,25 +17,30 @@ export default function Application(props) {
 
   //passing a function to useState to be able to use setDay
   const setDay = day => setState({ ...state, day });
-  const setDays = days => setState((prev => ({ ...prev, days })));
 
-  //declaring variables for use 
-  const dailyAppointments = []
+  //Axios request
+  useEffect(() => {
+    Promise.all([
+      axios.get("/api/days"),
+      axios.get("/api/appointments"),
+      axios.get("/api/interviewers")
+    ])
+      .then ((all) => {
+        setState(prev => ({...prev, days: all[0].data, appointments: all[1].data, interviewers: all[2].data}))
+      })
+      .catch((err) => {
+        console.log(err.message)
+      })
+  }, [])
 
-  //maping over appointments
+  //array of appointments for this specific day
+  const dailyAppointments = getAppointmentsForDay(state, state.day)
+
+  //maping over appointments creating single appointments components 
   const appointmentList = dailyAppointments.map(appointment => <Appointment 
     key = {appointment.id}
     {...appointment}
   />)
-
-  //Axios request
-  useEffect(() => {
-    axios.get("/api/days")
-      .then ((response) => {
-        //console.log(response.data)
-        setDays([...response.data])
-      })
-  }, [])
 
   return (
     <main className="layout">
