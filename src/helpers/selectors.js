@@ -15,16 +15,19 @@ function getAppointmentsForDay(state, day) {
 
 function getInterview (state, interview) {
   if (!interview){
+    console.log("null")
     return null
   } else {
     //getting the interviewer ID
-    let interviewerID = interview.interviewer; 
+    let interviewerID = interview.interviewer; //2
     //retriving interviewer information
     let interviewerInformation = state.interviewers[interviewerID]
     //rebuilding inteviewer object
-    interview.interviewer = interviewerInformation
-    return interview
+    let interviewerObject = {
+      student: interview.student, 
+      interviewer: interviewerInformation
+    }
+    return interviewerObject
   }
 }
 export { getAppointmentsForDay, getInterview }
-
