@@ -13,6 +13,24 @@ function getAppointmentsForDay(state, day) {
   return appointments;
 }
 
+function getInterviewersForDay (state, day) {
+  let interviewersArray = [];
+  let interviewers = [];
+
+  //looping through the days to find the spefic day
+  for (let days of state.days) {
+    if (days.name === day) {
+      interviewersArray = days.interviewers
+    }
+  }
+
+  //getting the interviewers from the interviewers object
+  for (let i = 0; i < interviewersArray.length; i++) {
+    interviewers.push(state.interviewers[interviewersArray[i]])
+  }
+  return interviewers
+}
+
 function getInterview (state, interview) {
   if (!interview){
     console.log("null")
@@ -30,4 +48,4 @@ function getInterview (state, interview) {
     return interviewerObject
   }
 }
-export { getAppointmentsForDay, getInterview }
+export { getAppointmentsForDay, getInterview, getInterviewersForDay }
