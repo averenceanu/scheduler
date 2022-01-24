@@ -40,7 +40,7 @@ export default function Application(props) {
   //array of interterviewers for this specific day
   const interviewersList = getInterviewersForDay(state, state.day);
 
-  //function collecting the interview information when creating a new interview
+  //creating a new interview
   function bookInterview(id, interview) {
     const appointment = {
       ...state.appointments[id],
@@ -50,7 +50,7 @@ export default function Application(props) {
       ...state.appointments,
       [id]: appointment
     };
-    setState({...state, appointments})
+    //setState({...state, appointments})
     // console.log(id, interview);
 
    return axios.put(`/api/appointments/${id}`, appointment)
@@ -60,6 +60,28 @@ export default function Application(props) {
       .catch ((error) => {
         console.log(error);
       })
+  }
+
+  //deleting an interview 
+  function cancelInterview (id) {
+   //delete the appointment locally 
+   //grab appointment id
+    const appointment = {
+      ...state.appointments[id],
+      interview: null
+    }
+    const appointments = {
+      ...state.appointments,
+      [id]: appointment
+    }
+
+    return axios.delete(`/api/appointments/${id}`, appointment)
+      .then ((response) => {
+        setState(prev => ({...prev, appointments}))
+      })
+      // .catch ((error) => {
+      //   console.log(error);
+      // })
   }
 
   //maping over appointments creating single appointments components 
@@ -74,6 +96,7 @@ export default function Application(props) {
         interview={interview}
         interviewers={interviewersList}
         bookInterview={bookInterview}
+        onDelete={cancelInterview}
       />
     );
   });
