@@ -28,7 +28,6 @@ export default function Application(props) {
     ])
       .then ((all) => {
         setState(prev => ({...prev, days: all[0].data, appointments: all[1].data, interviewers: all[2].data}))
-        console.log("APPDATA", all[2].data)
       })
       .catch((err) => {
         console.log(err.message)
@@ -41,6 +40,28 @@ export default function Application(props) {
   //array of interterviewers for this specific day
   const interviewersList = getInterviewersForDay(state, state.day);
 
+  //function collecting the interview information when creating a new interview
+  function bookInterview(id, interview) {
+    const appointment = {
+      ...state.appointments[id],
+      interview: { ...interview }
+    };
+    const appointments = {
+      ...state.appointments,
+      [id]: appointment
+    };
+    setState({...state, appointments})
+    // console.log(id, interview);
+
+   return axios.put(`/api/appointments/${id}`, appointment)
+      .then ((response) => {
+        setState(prev => ({...prev, appointments}))
+      })
+      .catch ((error) => {
+        console.log(error);
+      })
+  }
+
   //maping over appointments creating single appointments components 
   const appointmentList = appointments.map((appointment) => {
     const interview = getInterview(state, appointment.interview)
@@ -52,6 +73,7 @@ export default function Application(props) {
         time={appointment.time}
         interview={interview}
         interviewers={interviewersList}
+        bookInterview={bookInterview}
       />
     );
   });

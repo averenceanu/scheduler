@@ -33,7 +33,6 @@ function getInterviewersForDay (state, day) {
 
 function getInterview (state, interview) {
   if (!interview){
-    console.log("null")
     return null
   } else {
     //getting the interviewer ID
