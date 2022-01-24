@@ -39,7 +39,7 @@ export default function Appointment (props) {
       {mode === CREATE && (
         <Form 
           // student={props.interview.student}
-          interviewers={[]} //intentionally left empty array
+          interviewers={props.interviewers} //intentionally left empty array
           onCancel={() => {back()}}
         />
       )}
