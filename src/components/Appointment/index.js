@@ -9,6 +9,7 @@ import Error from "./Error.js"
 import Form from "./Form.js"
 
 export default function Appointment (props) {
+  //console.log("INDEX", props)
   return (
     <article className="appointment">
       <Header time={props.time}/>

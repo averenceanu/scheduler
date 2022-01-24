@@ -4,7 +4,7 @@ import axios from "axios";
 import "components/Application.scss";
 import DayList from "components/DayList.js"
 import Appointment from "components/Appointment/index.js";
-import getAppointmentsForDay from "../helpers/selectors.js"
+import { getAppointmentsForDay, getInterview } from "../helpers/selectors.js"
 
 
 export default function Application(props) {
@@ -12,7 +12,8 @@ export default function Application(props) {
   const [state, setState] = useState({
     day: "Monday", 
     days: [],
-    appointments: {}
+    appointments: {},
+    interviewers: {}
   })
 
   //passing a function to useState to be able to use setDay
@@ -27,6 +28,7 @@ export default function Application(props) {
     ])
       .then ((all) => {
         setState(prev => ({...prev, days: all[0].data, appointments: all[1].data, interviewers: all[2].data}))
+        console.log("APPDATA", all[2].data)
       })
       .catch((err) => {
         console.log(err.message)
@@ -34,13 +36,21 @@ export default function Application(props) {
   }, [])
 
   //array of appointments for this specific day
-  const dailyAppointments = getAppointmentsForDay(state, state.day)
+  const appointments = getAppointmentsForDay(state, state.day); 
 
   //maping over appointments creating single appointments components 
-  const appointmentList = dailyAppointments.map(appointment => <Appointment 
-    key = {appointment.id}
-    {...appointment}
-  />)
+  const appointmentList = appointments.map((appointment) => {
+    const interview = getInterview(state, appointment.interview)
+    return (
+      <Appointment 
+        key = {appointment.id}
+        // {...appointment}
+        id={appointment.id}
+        time={appointment.time}
+        interview={interview}
+      />
+    );
+  });
 
   return (
     <main className="layout">
