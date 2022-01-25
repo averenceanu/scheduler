@@ -57,9 +57,9 @@ export default function Application(props) {
       .then ((response) => {
         setState(prev => ({...prev, appointments}))
       })
-      .catch ((error) => {
-        console.log(error);
-      })
+      // .catch ((error) => {
+      //   console.log(error);
+      // })
   }
 
   //deleting an interview 

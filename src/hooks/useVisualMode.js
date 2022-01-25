@@ -9,7 +9,7 @@ import { useState } from "react";
       setMode(updateMode)
     } else {
       setMode(updateMode)
-      setHistory([...history, updateMode])
+      setHistory((prev) => [...prev, updateMode]) //[...history]
     }
   }
 
