@@ -48,7 +48,8 @@ export default function useApplicationData() {
     return axios
       .delete(`/api/appointments/${id}`, appointment)
       .then((response) => {
-        setState((prev) => ({ ...prev, appointments }));
+        const days = updateSpots();
+        setState((prev) => ({ ...prev, appointments, days }));
       });
   }
 
@@ -58,6 +59,13 @@ export default function useApplicationData() {
       ...state.appointments[id],
       interview: { ...interview },
     };
+
+    const editing = appointment.interview; 
+    console.log("this is editing", editing)
+    appointment.interview = {...interview}
+    console.log("appointment.interview", appointment.interview)
+    let days = [...state.days]
+
     const appointments = {
       ...state.appointments,
       [id]: appointment,
@@ -66,13 +74,38 @@ export default function useApplicationData() {
     return axios
       .put(`/api/appointments/${id}`, appointment)
       .then((response) => {
-        setState((prev) => ({ ...prev, appointments }));
+        if (!editing) {
+          days = updateSpots("bookAppointment");
+        }
+        //let days = updateSpots("bookAppointment");
+        setState((prev) => ({ ...prev, appointments, days }));
       });
   }
+
+  function updateSpots(requestType) {
+    const days = state.days.map((day) => {
+      if (day.name === state.day) {
+        if (requestType === "bookAppointment") {
+          //console.log(state.appointments)
+          return { ...day, spots: day.spots - 1 }; //needs to count the null instead of day.spots
+        } else {
+          return { ...day, spots: day.spots + 1 };
+        }
+      } else {
+        return { ...day };
+      }
+    });
+    return days;
+  }
+
+
   return {
     state,
     setDay,
     bookInterview,
     cancelInterview,
+    updateSpots
   };
+
+  
 }
