@@ -13,6 +13,48 @@ export default function useApplicationData() {
   //passing a function to useState to be able to use setDay
   const setDay = (day) => setState({ ...state, day });
 
+  function updateSpots(requestType) {
+    const days = state.days.map((day) => {
+      if (day.name === state.day) {
+        if (requestType === "bookAppointment") {
+          //console.log(state.appointments)
+          return { ...day, spots: day.spots - 1 }; //needs to count the null instead of day.spots
+        } else {
+          return { ...day, spots: day.spots + 1 };
+        }
+      } else {
+        return { ...day };
+      }
+    });
+    return days;
+  }
+
+  //creating a new interview
+  function bookInterview(id, interview) {
+    const appointment = {
+      ...state.appointments[id],
+    };
+
+    const editing = appointment.interview;
+    appointment.interview = { ...interview };
+    let days = [...state.days];
+
+    const appointments = {
+      ...state.appointments,
+      [id]: appointment,
+    };
+
+    return axios
+      .put(`/api/appointments/${id}`, appointment)
+      .then((response) => {
+        if (!editing) {
+          days = updateSpots("bookAppointment");
+        }
+        //let days = updateSpots("bookAppointment");
+        setState((prev) => ({ ...prev, appointments, days }));
+      });
+  }
+
   //Axios request
   useEffect(() => {
     Promise.all([
@@ -52,58 +94,11 @@ export default function useApplicationData() {
         setState((prev) => ({ ...prev, appointments, days }));
       });
   }
-
-  //creating a new interview
-  function bookInterview(id, interview) {
-    const appointment = {
-      ...state.appointments[id],
-      interview: { ...interview },
-    };
-
-    const editing = appointment.interview; 
-    console.log("this is editing", editing)
-    appointment.interview = {...interview}
-    console.log("appointment.interview", appointment.interview)
-    let days = [...state.days]
-
-    const appointments = {
-      ...state.appointments,
-      [id]: appointment,
-    };
-
-    return axios
-      .put(`/api/appointments/${id}`, appointment)
-      .then((response) => {
-        if (!editing) {
-          days = updateSpots("bookAppointment");
-        }
-        //let days = updateSpots("bookAppointment");
-        setState((prev) => ({ ...prev, appointments, days }));
-      });
-  }
-
-  function updateSpots(requestType) {
-    const days = state.days.map((day) => {
-      if (day.name === state.day) {
-        if (requestType === "bookAppointment") {
-          //console.log(state.appointments)
-          return { ...day, spots: day.spots - 1 }; //needs to count the null instead of day.spots
-        } else {
-          return { ...day, spots: day.spots + 1 };
-        }
-      } else {
-        return { ...day };
-      }
-    });
-    return days;
-  }
-
-
   return {
     state,
     setDay,
     bookInterview,
     cancelInterview,
-    updateSpots
+    updateSpots,
   };
 }
