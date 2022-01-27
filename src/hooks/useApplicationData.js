@@ -106,6 +106,4 @@ export default function useApplicationData() {
     cancelInterview,
     updateSpots
   };
-
-  
 }
