@@ -17,7 +17,6 @@ export default function useApplicationData() {
     const days = state.days.map((day) => {
       if (day.name === state.day) {
         if (requestType === "bookAppointment") {
-          //console.log(state.appointments)
           return { ...day, spots: day.spots - 1 }; //needs to count the null instead of day.spots
         } else {
           return { ...day, spots: day.spots + 1 };
