@@ -1,4 +1,5 @@
 # Interview Scheduler
+React app allowing to schedule appointments. 
 
 ## Setup
 
@@ -21,3 +22,12 @@ npm test
 ```sh
 npm run storybook
 ```
+
+## Some images
+
+#### General Overview 
+!["General Overview"](https://github.com/averenceanu/scheduler/blob/master/docs/avScheduler1.png?raw=true)
+
+#### Current appointment, creating a new one, deleting one 
+
+!["current appointment"](https://github.com/averenceanu/scheduler/blob/master/docs/avScheduler2.png?raw=true)
