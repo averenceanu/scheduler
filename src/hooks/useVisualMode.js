@@ -4,22 +4,23 @@ function useVisualMode(initial) {
   const [mode, setMode] = useState(initial);
   const [history, setHistory] = useState([initial]);
 
-  const transition = function (updateMode, replace = false) {
-    if (replace) {
-      setMode(updateMode);
-    } else {
-      setMode(updateMode);
-      setHistory((prev) => [...prev, updateMode]);
-    }
+  //transition to a new mode
+  const transition = function (current, replace = false) {
+    replace && back()
+    let newHistory = [...history];
+    newHistory.push(current);
+    setHistory(newHistory);
+    setMode(current)
   };
 
+  //return to the previous page
   const back = function () {
-    history.pop();
-    setHistory([...history]);
-    if (history.length >= 1) {
-      setMode(history[history.length - 1]);
-    }
+   let newHistory = [...history];
+   newHistory.pop();
+   setHistory(newHistory);
+   setMode(newHistory[newHistory.length - 1]);
   };
+
   return {
     mode,
     transition,
