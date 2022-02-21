@@ -22,11 +22,15 @@ export default function Form (props) {
   }
 
   function helper(){
-    if(student) {
+    if (!student) {
+      setError("Student name cannot be blank")
+      return;
+    } else if (interviewer === null) {
+      setError("An interviewer must be selected")
+      return;
+    } else {
       setError("")
       props.onSave(student, interviewer)
-    } else {
-     setError("Student name cannot be blank")
     }
   }
 
