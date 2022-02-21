@@ -23,7 +23,7 @@ npm test
 npm run storybook
 ```
 ## Dependencies: 
-1. Requires to run Scheduler-API for back-end. See more information ![here](https://github.com/lighthouse-labs/scheduler-api) 
+1. Requires to run Scheduler-API for back-end. For more information follow this link (https://github.com/lighthouse-labs/scheduler-api) 
 2. Other dependencies: 
   1. Axios,
   2. Babel,
